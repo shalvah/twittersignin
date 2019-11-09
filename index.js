@@ -6,7 +6,7 @@ const helpers = require('twit/lib/helpers');
 const xmlparser = require('fast-xml-parser');
 
 /**
- * @typedef {Object.<string, string>} TwitterConfig
+ * @typedef {Object.<string, string>} TwitterAppConfig
  * @property {string} consumerKey
  * @property {string} consumerSecret
  * @property {string} accessToken
@@ -14,14 +14,14 @@ const xmlparser = require('fast-xml-parser');
  */
 
 /**
- * @param {TwitterConfig} config
+ * @param {TwitterAppConfig} config
  */
 module.exports = ({consumerKey, consumerSecret, accessToken, accessTokenSecret,}) => {
 
     /**
      *
      * @param {Object} options
-     * @param {string?} options.oauth_callback
+     * @param {string=} options.oauth_callback
      * @param {"read" | "write"=} options.x_auth_access_type
      * @returns {Promise<{
      *   oauth_token: string,
@@ -53,7 +53,7 @@ module.exports = ({consumerKey, consumerSecret, accessToken, accessTokenSecret,}
 
             const onRequestEnd = () => {
                 if (response && response.statusCode > 200) {
-                    const err = helpers.makeTwitError('Twitter API Error')
+                    const err = helpers.makeTwitError('Twitter API Error');
                     err.statusCode = response ? response.statusCode : null;
                     let parsedBody;
                     try {
@@ -153,7 +153,7 @@ module.exports = ({consumerKey, consumerSecret, accessToken, accessTokenSecret,}
 
             const onRequestEnd = function () {
                 if (response && response.statusCode > 200) {
-                    const err = helpers.makeTwitError('Twitter API Error')
+                    const err = helpers.makeTwitError('Twitter API Error');
                     err.statusCode = response ? response.statusCode : null;
                     let parsedBody;
                     try {
@@ -212,6 +212,55 @@ module.exports = ({consumerKey, consumerSecret, accessToken, accessTokenSecret,}
             .then(r => r.data);
     };
 
+    /**
+     *
+     * @param {string} accessToken
+     * @param {string} accessTokenSecret
+     * @param {{include_entities?: boolean, skip_status?: boolean, include_email?: boolean}} params
+     * @returns {Promise<Object<string, ?> | {
+     *   id_str: string,
+     *   name: string,
+     *   screen_name: string,
+     *   location: string,
+     *   description: string,
+     *   url: string,
+     *   entities: {},
+     *   protected: boolean,
+     *   followers_count: number,
+     *   friends_count: number,
+     *   listed_count: number,
+     *   created_at: string,
+     *   favourites_count: number,
+     *   time_zone: null,
+     *   geo_enabled: boolean,
+     *   verified: boolean,
+     *   statuses_count: number,
+     *   lang: string,
+     *   status: {},
+     *   contributors_enabled: boolean,
+     *   is_translator: boolean,
+     *   is_translation_enabled: null,
+     *   profile_background_color: string,
+     *   profile_background_image_url: string,
+     *   profile_background_image_url_https: string,
+     *   profile_background_tile: null,
+     *   profile_image_url: string,
+     *   profile_image_url_https: string,
+     *   profile_banner_url: string,
+     *   profile_link_color: string,
+     *   profile_sidebar_border_color: string,
+     *   profile_sidebar_fill_color: string,
+     *   profile_text_color: string,
+     *   profile_use_background_image: null,
+     *   has_extended_profile: null,
+     *   default_profile: boolean,
+     *   default_profile_image: boolean,
+     *   following: boolean,
+     *   follow_request_sent: boolean,
+     *   notifications: boolean,
+     *   translator_type: string
+     * }>}
+     */
     const getUser = (accessToken, accessTokenSecret, params) => {
         const t = new Twit({
             consumer_key: process.env.TWITTER_CONSUMER_KEY,
