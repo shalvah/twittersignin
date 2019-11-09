@@ -12,7 +12,8 @@
   "repository": "https://github.com/shalvah/twittersignin",
   "dependencies": {
     "fast-xml-parser": "^3.14.0",
-    "twit": "2.2.11"
+    "twit": "2.2.11",
+    "request": "latest"
   },
   "devDependencies": {
     "@types/node": "^12.12.7",
