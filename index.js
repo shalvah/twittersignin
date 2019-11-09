@@ -120,7 +120,100 @@ module.exports = ({consumerKey, consumerSecret, accessToken, accessTokenSecret,}
             .then(r => r.data);
     };
 
+    /**
+     *
+     * @param {string} requestToken
+     * @param {string} requestTokenSecret
+     * @param {string} oauth_verifier
+     * @returns {Promise<{
+     *   oauth_token: string,
+     *   oauth_token_secret: string,
+     *   screen_name: string,
+     *   user_id: string,
+     * }>}
+     */
+    const getAccessToken = (requestToken, requestTokenSecret, oauth_verifier) => {
+        const t = new Twit({
+            consumer_key: consumerKey,
+            consumer_secret: consumerSecret,
+            access_token: requestToken,
+            access_token_secret: requestTokenSecret,
+        });
+
+        t._doRestApiRequest = function (reqOpts, twitOptions, method, callback) {
+            if (oauth_verifier) {
+                reqOpts.form = {oauth_verifier};
+            }
+
+            const requestMethod = require('request')[method.toLowerCase()];
+            const req = requestMethod(reqOpts);
+
+            let body = '';
+            let response = null;
+
+            const onRequestEnd = function () {
+                if (response && response.statusCode > 200) {
+                    const err = helpers.makeTwitError('Twitter API Error')
+                    err.statusCode = response ? response.statusCode : null;
+                    let parsedBody;
+                    try {
+                        parsedBody = JSON.parse(body);
+                        helpers.attachBodyInfoToError(err, parsedBody);
+                    } catch (e) {
+                        // Usually the response is a simple error string
+                        err.message = body;
+                        err.twitterReply = body;
+                        err.allErrors = err.allErrors.concat([body])
+                    }
+                    return callback(err, body, response);
+                }
+
+                /**
+                 * @type {{
+                 *   oauth_token: string,
+                 *   oauth_token_secret: string,
+                 *   oauth_callback_confirmed: boolean
+                 * }}
+                 */
+                let parsedBody = null;
+                if (body !== '') {
+                    // @ts-ignore
+                    parsedBody = require('querystring').decode(body);
+                    // @ts-ignore
+                    parsedBody.oauth_callback_confirmed = parsedBody.oauth_callback_confirmed === 'true';
+                }
+
+                // success case - no errors in HTTP response body
+                callback(null, parsedBody || body, response)
+            }
+
+            req.on('response', function onRequestResponse(res) {
+                response = res;
+                req.on('data', (chunk) =>  {
+                    body += chunk.toString('utf8')
+                });
+                req.on('end', onRequestEnd);
+            })
+
+            req.on('error', function onRequestError(err) {
+                // transport-level error occurred - likely a socket error
+                // pass the transport-level error to the caller
+                err.statusCode = null
+                err.message = body;
+                err.code = null
+                err.allErrors = [];
+                helpers.attachBodyInfoToError(err, body)
+                callback(err, body, response);
+                return;
+            })
+        }
+
+        return t.post(`https://api.twitter.com/oauth/access_token`)
+            .then(r => r.data);
+    };
+
     return {
         getRequestToken,
+        getAccessToken,
     };
 };
