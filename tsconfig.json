@@ -4,6 +4,7 @@
     "target": "es2017",
     "sourceMap": true,
     "allowJs": true,
+    "noEmit": true,
     "declaration": true
   },
   "exclude": [

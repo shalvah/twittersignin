@@ -33,7 +33,6 @@ declare function _exports({ consumerKey, consumerSecret, accessToken, accessToke
         listed_count: number;
         created_at: string;
         favourites_count: number;
-        utc_offset: null;
         time_zone: null;
         geo_enabled: boolean;
         verified: boolean;
