@@ -7,6 +7,10 @@
   "keywords": [
     "twitter"
   ],
+  "scripts": {
+    "lint": "eslint index.js",
+    "tsc": "tsc"
+  },
   "author": "",
   "license": "MIT",
   "repository": "https://github.com/shalvah/twittersignin",
@@ -17,6 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^12.12.7",
+    "eslint": "^6.6.0",
     "typescript": "^3.7.2"
   }
 }
