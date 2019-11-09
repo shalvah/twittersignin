@@ -1,5 +1,5 @@
 declare function _exports({ consumerKey, consumerSecret, accessToken, accessTokenSecret, }: TwitterAppConfig): {
-    getRequestToken: ({ oauth_callback, x_auth_access_type }: {
+    getRequestToken: ({ oauth_callback, x_auth_access_type }?: {
         oauth_callback?: string;
         x_auth_access_type?: "read" | "write";
     }) => Promise<{
@@ -13,7 +13,7 @@ declare function _exports({ consumerKey, consumerSecret, accessToken, accessToke
         screen_name: string;
         user_id: string;
     }>;
-    getUser: (accessToken: string, accessTokenSecret: string, params: {
+    getUser: (accessToken: string, accessTokenSecret: string, params?: {
         include_entities?: boolean;
         skip_status?: boolean;
         include_email?: boolean;
