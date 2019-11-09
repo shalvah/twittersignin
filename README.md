@@ -6,9 +6,9 @@ Here are some of the differences:
 1. The flow sends params as form data, not JSON or query params like the other APIs.
 2. The flow uses some additional OAuth parameters (`callback`) which must be included in the OAuth header.
 3. The success response is in query string format, not JSON.
-4. Some error responses are in XML format (Yep!), others are in JSON, others are just plain strings.
+4. Some error responses are in XML format (yep!🤷‍♂️), others are in JSON, others are just plain strings.
 
-It's easy to get a lot wrong. It's very likely you'l spend hours implementing Sign In With Twitter. This library aims to make it simple by abstracting away the differences and problems.
+It's easy to get a lot wrong. It's very likely you'll spend hours implementing Sign In With Twitter in your app. This library aims to make it simple by abstracting away the differences and problems.
 
 Internally, this library is a wrapper around [Twit](https://github.com/ttezel/twit) (pinned at version 2.2.11). Twit provides a nice, consistent interface for accessing the Twitter APIs, but does not support these Twitter Sign In APIs. This library modifies some of Twit's internal behaviour to support them. The success responses are the same as the `data` object in Twit, and the errors thrown are the same as when using Twit. 
 
@@ -19,7 +19,7 @@ Install via npm:
 npm i twittersignin
 ```
 
-- Initialise with your app's default credentials:
+Initialise with your app's default credentials:
 
 ```js
 const twitterSignIn = require('twittersignin')({
@@ -35,10 +35,10 @@ As described by [the Twitter docs](https://developer.twitter.com/en/docs/twitter
 > ⚠ Make sure to go through the Twitter doc first, as this is only intended to complement that.
 
 ### Step 1—When the user clicks "Sign in with Twitter": Fetch a request token from Twitter
-Create a link on your web page that points to a route on your backend. This is the route your user gets taken to when they click "Sign in to Twitter". In this route, your backend should fetch a request token from Twitter. Here's how to do that:
+To start the process, your user needs to click a "Sign In With twitter" link/button. Create one and add it to your web site. This link will point to a route on your backend. In this route, your backend should fetch a request token from Twitter. Here's how to do that:
 
 ```js
-    const response = await twitterSignIn.getRequestToken();
+const response = await twitterSignIn.getRequestToken();
 const requestToken = response.oauth_token;
 const requestTokenSecret = response.oauth_token_secret;
 const callbackConfirmed = oauth_callback_confirmed;
@@ -47,23 +47,25 @@ const callbackConfirmed = oauth_callback_confirmed;
 You can pass in optional parameters:
 ```js
 await twitterSignIn.getRequestToken({
-        oauth_callback: "https://yourcallback.url?query=param",
-        x_auth_access_type: "read",
-    })
+    oauth_callback: "https://yourcallback.url?query=param",
+    x_auth_access_type: "read",
+})
 ```
 
 The response contains three parameters:
-- `oauth_callback_confirmed`: You should check that this value === `true` first. 
+- `oauth_callback_confirmed`: You should check that this value === `true` before proceeding. 
 - `oauth_token`. This is the request token. You'll use it in the next step.
 - `oauth_token_secret`: This is the request token secret. You'll need it in the third step. 
 
-> ⚠ Make sure to store the `requestTokenSecret` somewhere. I recommend a cache, so you can easily expire it after a few minutes(the token is short-lived).
-> Here's one way to store it (using Redis):`redis.set(`tokens-${requestToken}`, requestTokenSecret, 'EX', 5 * 60);`Here, we're storing it with the token as key, so we can easily look it up in Step 3.
+> ⚠ Make sure to store the request token secret somewhere. I recommend a cache, so it can expire automatically after a few minutes (the token is short-lived).
+>
+> Here's one way to store it (using Redis):`redis.set(`tokens-${requestToken}`, requestTokenSecret, 'EX', 5 * 60);`Here, we're storing it using the token as the key, so we can easily look it up in Step 3.
 
 
 ### Step 2—Redirect the user to Twitter
-When you have the request token, the next step is to redirect the user to Twitter. Make sure it's a 302 (temporary) redirect, so browsers don't cache it!
-You can redirect either to `/oauth/authenticate` for one-time auth, or `/oauth/authorize` if you want the user to always have to authorize your app.
+When you have the request token, the next step is to redirect the user to Twitter. You can redirect either to `/oauth/authenticate` for one-time auth, or `/oauth/authorize` if you want the user to always have to authorize your app.
+
+> ⚠ Make sure it's a 302 (temporary) redirect, so browsers don't cache it!
 
 ```js
 res.redirect(`https://api.twitter.com/oauth/authorize?oauth_token=${requestToken}`, 302);
@@ -122,7 +124,7 @@ if (user.followers_count > 1000) {
 }
 ```
 
-## Important info
+## A few notes
 ### Responses
 This package returns the `data` section from Twit responses, so you can get directly to the data you need.
 
