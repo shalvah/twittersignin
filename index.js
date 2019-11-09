@@ -212,8 +212,20 @@ module.exports = ({consumerKey, consumerSecret, accessToken, accessTokenSecret,}
             .then(r => r.data);
     };
 
+    const getUser = (accessToken, accessTokenSecret, params) => {
+        const t = new Twit({
+            consumer_key: process.env.TWITTER_CONSUMER_KEY,
+            consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+            access_token: accessToken,
+            access_token_secret: accessTokenSecret,
+        });
+        return t.get(`account/verify_credentials`, params)
+            .then(r => r.data);
+    };
+
     return {
         getRequestToken,
         getAccessToken,
+        getUser,
     };
 };
