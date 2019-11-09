@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Straightforward implementation of Sign in with Twitter",
   "main": "index.js",
+  "types": "index.d.ts",
   "keywords": [
     "twitter"
   ],
