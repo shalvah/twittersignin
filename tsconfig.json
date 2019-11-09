@@ -4,10 +4,13 @@
     "target": "es2017",
     "sourceMap": true,
     "allowJs": true,
-    "noEmit": true,
-    "watch": true
+    "watch": true,
+    "declaration": true
   },
   "exclude": [
     "node_modules"
+  ],
+  "include": [
+    "index.js"
   ]
 }
