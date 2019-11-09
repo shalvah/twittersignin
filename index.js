@@ -1,4 +1,3 @@
-// @ts-check
 'use strict';
 
 const Twit = require('twit');
