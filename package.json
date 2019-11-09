@@ -1,6 +1,6 @@
 {
   "name": "twittersignin",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Straightforward implementation of Sign in with Twitter",
   "main": "index.js",
   "types": "index.d.ts",
@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "lint": "eslint index.js",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "prepublish": "npm run lint && npm run tsc"
   },
   "author": "",
   "license": "MIT",
