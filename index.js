@@ -29,7 +29,7 @@ module.exports = ({consumerKey, consumerSecret, accessToken, accessTokenSecret,}
      *   oauth_callback_confirmed: boolean
      * }>}
      */
-    const getRequestToken = ({oauth_callback, x_auth_access_type}) => {
+    const getRequestToken = ({oauth_callback, x_auth_access_type} = {}) => {
         const t = new Twit({
             consumer_key: consumerKey,
             consumer_secret: consumerSecret,
@@ -262,7 +262,7 @@ module.exports = ({consumerKey, consumerSecret, accessToken, accessTokenSecret,}
      *   translator_type: string
      * }>}
      */
-    const getUser = (accessToken, accessTokenSecret, params) => {
+    const getUser = (accessToken, accessTokenSecret, params = {}) => {
         const t = new Twit({
             consumer_key: process.env.TWITTER_CONSUMER_KEY,
             consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
