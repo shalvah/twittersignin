@@ -8,5 +8,8 @@
   ],
   "author": "",
   "license": "MIT",
-  "repository": "https://github.com/shalvah/twittersignin"
+  "repository": "https://github.com/shalvah/twittersignin",
+  "dependencies": {
+    "twit": "2.2.11"
+  }
 }
