@@ -11,5 +11,9 @@
   "repository": "https://github.com/shalvah/twittersignin",
   "dependencies": {
     "twit": "2.2.11"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.7",
+    "typescript": "^3.7.2"
   }
 }

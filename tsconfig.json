@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "sourceMap": true,
+    "allowJs": true,
+    "noEmit": true,
+    "watch": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
