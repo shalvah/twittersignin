@@ -5,7 +5,10 @@
   "main": "index.js",
   "types": "index.d.ts",
   "keywords": [
-    "twitter"
+    "twitter",
+    "sign in with twitter",
+    "twitter sign in",
+    "twitter oauth"
   ],
   "scripts": {
     "lint": "eslint index.js",
@@ -14,7 +17,10 @@
   },
   "author": "",
   "license": "MIT",
-  "repository": "https://github.com/shalvah/twittersignin",
+  "repository":  {
+    "type": "git",
+    "url": "git+https://github.com/shalvah/twittersignin.git"
+  },
   "dependencies": {
     "fast-xml-parser": "^3.14.0",
     "twit": "2.2.11",

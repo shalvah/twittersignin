@@ -151,5 +151,6 @@ Error handling in this package is designed to be the same as Twit. Anything othe
 
 ## Doing more work with the Twitter API?
 Check out some of my other libraries:
+
 - [twitter-error-handler](https://github.com/shalvah/twitter-error-handler)
 - [aargh](https://github.com/shalvah/aargh)
