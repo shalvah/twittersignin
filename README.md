@@ -78,7 +78,7 @@ When the authorization is successful, Twitter will redirect to your provided cal
 - `oauth_verifier`: some random string
 
  ### Step 3—When Twitter redirects to your app: Get an access token
- Next, your callback URL needs to handle the redirect from Twitter. You want to get an access token. This will allow you to ac as the user (get their account details, read their timeline, post tweets and so on—depending on your earlier requested permissions).
+ Next, your callback URL needs to handle the redirect from Twitter. You want to get an access token. This will allow you to act as the user (get their account details, read their timeline, post tweets and so on—depending on your earlier requested permissions).
  
  Here's how to get an access token:
  
