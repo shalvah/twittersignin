@@ -41,7 +41,7 @@ To start the process, your user needs to click a "Sign In With twitter" link/but
 const response = await twitterSignIn.getRequestToken();
 const requestToken = response.oauth_token;
 const requestTokenSecret = response.oauth_token_secret;
-const callbackConfirmed = oauth_callback_confirmed;
+const callbackConfirmed = response.oauth_callback_confirmed;
 ```
 
 You can pass in optional parameters:
@@ -59,7 +59,8 @@ The response contains three parameters:
 
 > ⚠ Make sure to store the request token secret somewhere. I recommend a cache, so it can expire automatically after a few minutes (the token is short-lived).
 >
-> Here's one way to store it (using Redis):`redis.set(`tokens-${requestToken}`, requestTokenSecret, 'EX', 5 * 60);`Here, we're storing it using the token as the key, so we can easily look it up in Step 3.
+
+Here's one way to store it (using Redis):`redis.set(`tokens-${requestToken}`, requestTokenSecret, 'EX', 5 * 60);`Here, we're storing it using the token as the key, so we can easily look it up in Step 3.
 
 
 ### Step 2—Redirect the user to Twitter
@@ -68,7 +69,7 @@ When you have the request token, the next step is to redirect the user to Twitte
 > ⚠ Make sure it's a 302 (temporary) redirect, so browsers don't cache it!
 
 ```js
-res.redirect(`https://api.twitter.com/oauth/authorize?oauth_token=${requestToken}`, 302);
+res.redirect(302, `https://api.twitter.com/oauth/authorize?oauth_token=${requestToken}`);
 ```
 
 The user's browser will then take them to Twitter where they can sign in to Twitter (if needed) and authorize your app.
@@ -88,7 +89,7 @@ const oauthVerifier = req.query.oauth_verifier;
 // Get the oauth_token query parameter. 
 // It's the same as the request token from step 1
 const requestToken = req.query.oauth_token;
-// Get the request token secret from whjere we stored it (Step 1)
+// Get the request token secret from where we stored it (Step 1)
 const requestTokenSecret = await redis.get(`tokens-${requestToken}`);
 
 const response = await twitterSignIn.getAccessToken(requestToken, requestTokenSecret, oauthVerifier);
