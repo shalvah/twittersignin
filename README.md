@@ -1,5 +1,7 @@
 # twittersignin
 
+[![npm version](https://badge.fury.io/js/twittersignin.svg)](https://badge.fury.io/js/twittersignin)
+
 This library exists because Twitter's Sign In With Twitter flow is substantially different from the rest of its APIs. It's also terribly documented.
 
 Here are some of the differences:
