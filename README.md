@@ -60,7 +60,12 @@ The response contains three parameters:
 > ⚠ Make sure to store the request token secret somewhere. I recommend a cache, so it can expire automatically after a few minutes (the token is short-lived).
 >
 
-Here's one way to store it (using Redis):`redis.set(`tokens-${requestToken}`, requestTokenSecret, 'EX', 5 * 60);`Here, we're storing it using the token as the key, so we can easily look it up in Step 3.
+Here's one way to store it (using Redis):
+```js
+redis.set(`tokens-${requestToken}`, requestTokenSecret, 'EX', 5 * 60);
+```
+
+Here, we're storing it using the token as the key, so we can easily look it up in Step 3.
 
 
 ### Step 2—Redirect the user to Twitter
