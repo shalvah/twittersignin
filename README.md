@@ -22,7 +22,7 @@ Install via npm:
 npm i twittersignin
 ```
 
-Initialise with your app's default credentials:
+Initialize with your app's default credentials:
 
 ```js
 const twitterSignIn = require('twittersignin')({
@@ -37,14 +37,14 @@ As described by [the Twitter docs](https://developer.twitter.com/en/docs/twitter
 
 > ⚠ Make sure to go through the Twitter doc first, as this is only intended to complement that.
 
-### Step 1—When the user clicks "Sign in with Twitter": Fetch a request token from Twitter
+### Step 1 — When the user clicks "Sign in with Twitter": Fetch a request token from Twitter
 To start the process, your user needs to click a "Sign In With twitter" link/button. Create one and add it to your web site. This link will point to a route on your backend. In this route, your backend should fetch a request token from Twitter. Here's how to do that:
 
 ```js
 const response = await twitterSignIn.getRequestToken();
 const requestToken = response.oauth_token;
 const requestTokenSecret = response.oauth_token_secret;
-const callbackConfirmed = oauth_callback_confirmed;
+const callbackConfirmed = response.oauth_callback_confirmed;
 ```
 
 You can pass in optional parameters:
@@ -65,7 +65,7 @@ The response contains three parameters:
 > Here's one way to store it (using Redis):`redis.set(`tokens-${requestToken}`, requestTokenSecret, 'EX', 5 * 60);`Here, we're storing it using the token as the key, so we can easily look it up in Step 3.
 
 
-### Step 2—Redirect the user to Twitter
+### Step 2 — Redirect the user to Twitter
 When you have the request token, the next step is to redirect the user to Twitter. You can redirect either to `/oauth/authenticate` for one-time auth, or `/oauth/authorize` if you want the user to always have to authorize your app.
 
 > ⚠ Make sure it's a 302 (temporary) redirect, so browsers don't cache it!
@@ -80,10 +80,10 @@ When the authorization is successful, Twitter will redirect to your provided cal
 - `oauth_token`: Same value as the `oauth_token` in Step 1 (the request token).
 - `oauth_verifier`: some random string
 
- ### Step 3—When Twitter redirects to your app: Get an access token
- Next, your callback URL needs to handle the redirect from Twitter. You want to get an access token. This will allow you to ac as the user (get their account details, read their timeline, post tweets and so on—depending on your earlier requested permissions).
+ ### Step 3 — When Twitter redirects to your app: Get an access token
+Next, your callback route needs to handle the redirect from Twitter. You want to get an access token. This will allow you to access the user's twitter account (get their account details, read their timeline, post tweets and so on—depending on your earlier requested permissions).
  
- Here's how to get an access token:
+Here's how to get an access token:
  
  ```js
 // Get the oauth_verifier query parameter
@@ -104,7 +104,7 @@ We're done! The response should contain four values:
 - `screen_name`: user's Twitter username
 - `user_id`
 
-### Step 4 (Optional)—Fetch the user
+### Step 4 (Optional) — Fetch the user
 Once you have the access token and access token secret, you can interact with the Twitter API as you would normally, but with the user's tokens to act as that user. For instance:
 ```js
 const Twit = require("twit");
