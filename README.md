@@ -16,6 +16,8 @@ It's easy to get a lot wrong. It's very likely you'll spend hours implementing S
 Internally, this library is a wrapper around [Twit](https://github.com/ttezel/twit) (pinned at version 2.2.11). Twit provides a nice, consistent interface for accessing the Twitter APIs, but does not support these Twitter Sign In APIs. This library modifies some of Twit's internal behaviour to support them. The success responses are the same as the `data` object in Twit, and the errors thrown are the same as when using Twit. 
 
 ## Usage
+> Note: This library is built for server-side use only.
+
 Install via npm:
 
 ```bash
