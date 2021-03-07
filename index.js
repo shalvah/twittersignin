@@ -32,8 +32,7 @@ module.exports = ({consumerKey, consumerSecret, accessToken, accessTokenSecret,}
         const t = new Twit({
             consumer_key: consumerKey,
             consumer_secret: consumerSecret,
-            access_token: accessToken,
-            access_token_secret: accessTokenSecret,
+            app_only_auth: true
         });
 
         t._doRestApiRequest = (reqOpts, twitOptions, method, callback) => {
@@ -137,8 +136,7 @@ module.exports = ({consumerKey, consumerSecret, accessToken, accessTokenSecret,}
         const t = new Twit({
             consumer_key: consumerKey,
             consumer_secret: consumerSecret,
-            access_token: requestToken,
-            access_token_secret: requestTokenSecret,
+            app_only_auth: true
         });
 
         t._doRestApiRequest = function (reqOpts, twitOptions, method, callback) {
