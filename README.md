@@ -13,7 +13,7 @@ Here are some of the differences:
 
 It's easy to get a lot wrong. It's very likely you'll spend hours implementing Sign In With Twitter in your app. This library aims to make it simple by abstracting away the differences and problems.
 
-Internally, this library is a wrapper around [Twit](https://github.com/ttezel/twit) (pinned at version 2.2.11). Twit provides a nice, consistent interface for accessing the Twitter APIs, but does not support these Twitter Sign In APIs. This library modifies some of Twit's internal behaviour to support them. The success responses are the same as the `data` object in Twit, and the errors thrown are the same as when using Twit. 
+Internally, this library is a wrapper/monkey-patch around [Twit](https://github.com/ttezel/twit) (pinned at version 2.2.11). Twit provides a nice, consistent interface for accessing the Twitter APIs, but does not support these Twitter Sign In APIs. This library modifies some of Twit's internal behaviour to support them. The success responses are the same as the `data` object in Twit, and the errors thrown are the same as when using Twit. 
 
 ## Usage
 > Note: This library is built for server-side use only.
@@ -58,13 +58,13 @@ await twitterSignIn.getRequestToken({
 ```
 
 The response contains three parameters:
-- `oauth_callback_confirmed`: You should check that this value === `true` before proceeding. 
+- `oauth_callback_confirmed`: Boolean. You should check that this value === `true` before proceeding. 
 - `oauth_token`. This is the request token. You'll use it in the next step.
 - `oauth_token_secret`: This is the request token secret. You'll need it in the third step. 
 
 > ⚠ Make sure to store the request token secret somewhere. I recommend a cache, so it can expire automatically after a few minutes (the token is short-lived).
 >
-> Here's one way to store it (using Redis):`redis.set(`tokens-${requestToken}`, requestTokenSecret, 'EX', 5 * 60);`Here, we're storing it using the token as the key, so we can easily look it up in Step 3.
+> Here's one way to store it (using Redis):`redis.set("tokens-" + requestToken, requestTokenSecret, 'EX', 5 * 60);`Here, we're storing it using the token as the key, so we can easily look it up in Step 3.
 
 
 ### Step 2 — Redirect the user to Twitter
@@ -123,7 +123,7 @@ await t.get('statuses/mentions_timeline');
 If you just want to fetch the user's profile, this package includes a convenience method to help with that:
 
 ```js
-const user = twitterSignIn.getUser(accessToken, accessTokenSecret);
+const user = await twitterSignIn.getUser(accessToken, accessTokenSecret);
 if (user.followers_count > 1000) {
  // ...
 }
